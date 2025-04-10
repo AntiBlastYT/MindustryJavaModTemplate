@@ -1,4 +1,4 @@
-package eturret.content;
+package example.content;
 
 import arc.graphics.Color;
 import arc.math.Interp;

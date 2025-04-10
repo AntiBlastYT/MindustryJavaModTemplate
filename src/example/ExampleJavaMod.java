@@ -30,7 +30,6 @@ public class ExampleJavaMod extends Mod{
 
     @Override
     public void loadContent(){
-        Log.info("Loaded ExampleJavaMod loadContent.");
     }
 
 }
