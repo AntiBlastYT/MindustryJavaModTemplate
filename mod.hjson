@@ -1,5 +1,5 @@
 #the mod name as displayed in-game
-displayName: "ErekirMoreTurrets"
+displayName: "eturret"
 
 #the internal name of your mod
 name: "eturret"
@@ -8,7 +8,7 @@ name: "eturret"
 author: "Antiblast"
 
 #the fully qualified main class of the mod
-main: "eturret.ErekirMoreTurrets"
+main: "eturret.ExampleJavaMod"
 
 #the mod description as seen in the mod dialog
 description: "More turrets"
