@@ -1,0 +1,102 @@
+package eturret.content;
+
+import arc.graphics.Color;
+import arc.math.Interp;
+import mindustry.content.*;
+import mindustry.entities.abilities.*.;
+import mindustry.entities.effect.*;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.ExplosionBulletType;
+import mindustry.entities.bullet.LiquidBulletType;
+import mindustry.entities.bullet.ShrapnelBulletType;
+import mindustry.entities.part.DrawPart.PartMove;
+import mindustry.entities.part.DrawPart.PartProgress;
+import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootAlternate;
+import mindustry.entities.pattern.ShootSpread;
+import mindustry.graphics.Pal;
+import mindustry.type.Category;
+import mindustry.type.ItemStack;
+import mindustry.type.PayloadStack;
+import mindustry.type.Weapon;
+import mindustry.type.unit.MissileUnitType;
+import mindustry.world.Block;
+import mindustry.world.blocks.defense.OverdriveProjector;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.defense.turrets.LiquidTurret;
+import mindustry.world.blocks.heat.HeatProducer;
+import mindustry.world.blocks.production.SingleBlockProducer;
+import mindustry.world.blocks.production.WallCrafter;
+import mindustry.world.blocks.units.UnitAssembler;
+import mindustry.world.blocks.units.UnitAssembler.AssemblerUnitPlan;
+import mindustry.world.blocks.units.UnitFactory;
+import mindustry.world.blocks.units.UnitFactory.UnitPlan;
+import mindustry.world.draw.*;
+import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BuildVisibility;
+
+object ErTurret {
+
+        //turret
+    public static Block  spencer;
+
+    public static void loadContent(){
+
+        spencer = ItemTurret("spencer").apply {
+            requirements(Category.turret, with(lead, 45, silicon, 60, titanium, 20));
+            size = 2;
+            reload = 45;
+            recoil = 0.5f;
+            consumeCoolant(24/60f);
+            recoilTime = 40;
+            shootCone = 2;
+            shootSound = Sounds.bolt;
+            rotateSpeed = 1.4f;
+            range = 150;
+            cooldownTime = 80;
+            final Color[] col = {Color.valueOf("f9350f")};
+            ammo(
+                    lead, new RailBulletType() {{
+                        length = 155f;
+                        damage = 55f;
+                        smokeEffect = Fx.colorSpark;
+                        hitColor = Color.valueOf("b397f0");
+                        hitEffect = endEffect = Fx.hitBulletColor;
+                        pierceDamageFactor = 0.6f;
+
+                        shootEffect = new Effect(10, e -> {
+                            color(e.color);
+                            float w = 1.2f + 7 * e.fout();
+
+                            Drawf.tri(e.x, e.y, w, 30f * e.fout(), e.rotation);
+                            color(e.color);
+
+                            for(int i : Mathf.signs){
+                                Drawf.tri(e.x, e.y, w * 1.1f, 18f * e.fout(), e.rotation + i * 90f);
+                            }
+
+                            Drawf.tri(e.x, e.y, w, 4f * e.fout(), e.rotation + 180f);
+                        });
+
+                        lineEffect = new Effect(20f, e -> {
+                            if (!(e.data instanceof Vec2 v)) return;
+
+                            color(e.color);
+                            stroke(e.fout() * 0.9f + 0.6f);
+
+                            Fx.rand.setSeed(e.id);
+                            for (int i = 0; i < 7; i++) {
+                                Fx.v.trns(e.rotation, Fx.rand.random(8f, v.dst(e.x, e.y) - 8f));
+                                Lines.lineAngleCenter(e.x + Fx.v.x, e.y + Fx.v.y, e.rotation + e.finpow(), e.foutpowdown() * 20f * Fx.rand.random(0.5f, 1f) + 0.3f);
+                            }
+
+                            e.scaled(14f, b -> {
+                                stroke(b.fout() * 1.5f);
+                                color(e.color);
+                                Lines.line(e.x, e.y, v.x, v.y);
+                            });
+                        });
+                    }},
+        }
+    }
+}
