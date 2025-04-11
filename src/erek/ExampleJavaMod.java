@@ -1,11 +1,9 @@
-package example;
+package erek;
 
 import arc.*;
 import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
+import erek.content.ErTurret;
 import mindustry.game.EventType.*;
-import mindustry.gen.*;
 import mindustry.mod.*;
 import mindustry.ui.dialogs.*;
 
@@ -30,6 +28,7 @@ public class ExampleJavaMod extends Mod{
 
     @Override
     public void loadContent(){
+        ErTurret.load();
     }
 
 }
