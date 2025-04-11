@@ -1,5 +1,6 @@
 package erek.content;
 
+import mindustry.ctype.*;
 import arc.graphics.*;
 //import arc.graphics.g2d.*;
 //import arc.math.Interp;
@@ -43,58 +44,23 @@ import static mindustry.type.ItemStack.*;
 public class ErTurret {
 
         //turret
-    public static Block  spencer;
+    public static Block spencer;
 
     public static void load(){
 
         spencer = new ItemTurret("spencer") {{
-            requirements(Category.turret, with(beryllium, 130, silicon, 185, graphite, 260));
-
+            requirements(Category.turret, with(Items.copper, 40, Items.lead, 25));
             ammo(
-                    beryllium, new BasicBulletType(5f, 20){{
-                        width = 8f;
-                        hitSize = 7f;
-                        height = 12f;
-                        ammoMultiplier = 1;
-                        hitColor = backColor = trailColor = Pal.berylShot;
-                        frontColor = Color.white;
-                        trailWidth = 1.6f;
-                        trailLength = 7;
-                        hitEffect = despawnEffect = Fx.hitBulletColor;
-                        buildingDamageMultiplier = 0.3f;
-                        pierceArmor = true;
-                    }},
-                    silicon, new BasicBulletType(5f, 35){{
-                        width = 8f;
-                        height = 12f;
-                        hitSize = 7f;
-                        ammoMultiplier = 1;
-                        reloadMultiplier = 1f;
-                        hitColor = backColor = trailColor = Pal.darkerGray;
-                        frontColor = Color.white;
-                        trailWidth = 1.6f;
-                        trailLength = 7;
-                        hitEffect = despawnEffect = Fx.hitBulletColor;
-                        buildingDamageMultiplier = 0.3f;
-                        pierceArmor = true;
-                    }}
+                Items.copper,  new BasicBulletType(3f, 12){{
+                    width = 7f;
+                    height = 9f;
+                    lifetime = 60f;
+                }}
             );
-
-            squareSprite = false;
-            coolantMultiplier = 5f;
-            shake = 1f;
-            drawer = new DrawTurret("reinforced-");
-            outlineColor = Pal.darkOutline;
-            size = 3;
-            envEnabled |= Env.space;
-            reload = 10f;
-            recoil = 2f;
-            range = 200;
-            shootCone = 5f;
-            scaledHealth = 130;
-            researchCostMultiplier = 0.05f;
-
-            coolant = consume(new ConsumeLiquid(Liquids.water, 15f / 60f));
+            range = 120f;
+            reload = 20f;
+            inaccuracy = 2f;
+            shootCone = 15f;
         }};
 }
 }
