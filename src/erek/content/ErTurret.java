@@ -51,17 +51,51 @@ public class ErTurret {
         spencer = new ItemTurret("spencer") {{
             requirements(Category.turret, with(Items.tungsten, 150, Items.silicon, 250, Items.oxide, 60, Items.surgeAlloy, 100));
             ammo(
-                Items.copper,  new BasicBulletType(3f, 12){{
-                    width = 7f;
-                    height = 9f;
-                    lifetime = 60f;
+                Items.surgeAlloy,  new ArtilleryBulletType(3f, 12){{
+                    width = 12f;
+                    height = 16f;
+                    lifetime = 240f;
+                    collidesAir = true;
+                    collidesGround = true;
+                    buildingDamageMultiplier = 0.5f;
+                    absorbable = true;
+                    hittable = false;
+                    splashDamageRadius = 100;
+                    lightningDamage = 120;
+                    lightningLength = 10;
+                    lightning = 10;
+                    damage = 900;
+                    splashDamage = 200;
+                    lifetime = 19;
+                    speed = 20;
+                    scaleLife = true;
+                    trailEffect = Fx.colorSpark;
+                    trailRotation = true;
+                    trailInterval = 3f;
+                    hitColor = backColor = trailColor = lightningColor = Color.valueOf("FFFFFF");
+                    frontColor = Color.white;
+                    trailWidth = 3f;
+                    trailLength = 12;
+                    hitEffect = despawnEffect = Fx.hitBulletColor;
                 }}
             );
-            range = 120f;
-            reload = 20f;
-            inaccuracy = 2f;
+			moveWhileCharging = false;
+            ammoUseEffect = Fx.casing3;
+            range = 300f;
+            reload = 500f;
+            shootCone = 100f;
+            scaledHealth = 210;
+            inaccuracy = 1f;
             shootCone = 15f;
             size = 4;
+            ammoEjectBack = 3f;
+            shoot.shots = 4;
+            shoot.shotDelay = 40f;
+            consumePower(10f);
+            outlineColor = Pal.darkOutline;
+            recoil = 10f;
+            recoilTime = 90f;
+            rotateSpeed = 2f;
         }};
 }
 }
