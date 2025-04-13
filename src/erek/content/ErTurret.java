@@ -52,8 +52,8 @@ public class ErTurret {
             requirements(Category.turret, with(Items.tungsten, 150, Items.silicon, 250, Items.oxide, 60, Items.surgeAlloy, 100));
             ammo(
                 Items.surgeAlloy,  new ArtilleryBulletType(3f, 12){{
-                    width = 12f;
-                    height = 16f;
+                    width = 16f;
+                    height = 20f;
                     lifetime = 240f;
                     collidesAir = true;
                     collidesGround = true;
@@ -64,8 +64,8 @@ public class ErTurret {
                     lightningDamage = 120;
                     lightningLength = 10;
                     lightning = 10;
-                    damage = 900;
-                    splashDamage = 200;
+                    damage = 700;
+                    splashDamage = 20;
                     lifetime = 19;
                     speed = 20;
                     scaleLife = true;
@@ -81,7 +81,7 @@ public class ErTurret {
             );
 			moveWhileCharging = false;
             ammoUseEffect = Fx.casing3;
-            range = 300f;
+            range = 360f;
             reload = 500f;
             shootCone = 100f;
             scaledHealth = 210;
@@ -89,13 +89,13 @@ public class ErTurret {
             shootCone = 15f;
             size = 4;
             ammoEjectBack = 3f;
-            shoot.shots = 4;
-            shoot.shotDelay = 40f;
+            shoot.shots = 2;
+            shoot.shotDelay = 20f;
             consumePower(10f);
             outlineColor = Pal.darkOutline;
-            recoil = 10f;
+            recoil = 7.5f;
             recoilTime = 90f;
-            rotateSpeed = 2f;
+            rotateSpeed = 1f;
         }};
 }
 }
