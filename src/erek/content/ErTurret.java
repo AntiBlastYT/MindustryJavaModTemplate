@@ -11,8 +11,10 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
+import mindustry.entities.part.DrawPart.PartProgress;
 import mindustry.entities.pattern.*;
 import mindustry.game.Team;
+import mindustry.gen.Sounds;
 //import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -61,41 +63,191 @@ public class ErTurret {
                     absorbable = true;
                     hittable = false;
                     splashDamageRadius = 100;
-                    lightningDamage = 120;
-                    lightningLength = 10;
-                    lightning = 10;
+                    lightningDamage = 170;
+                    lightningLength = 9;
+                    lightning = 4;
+                    lightningLengthRand = 5;
                     damage = 700;
                     splashDamage = 20;
                     lifetime = 19;
                     speed = 20;
                     scaleLife = true;
-                    trailEffect = Fx.colorSpark;
-                    trailRotation = true;
-                    trailInterval = 3f;
-                    hitColor = backColor = trailColor = lightningColor = Color.valueOf("FFFFFF");
+                    hitColor = backColor = trailColor = lightningColor = Pal.surge;
                     frontColor = Color.white;
+                    shootEffect = new MultiEffect(Fx.lancerLaserShoot, new WaveEffect(){{
+                        colorTo = Pal.surge;
+                        sizeTo = 26f;
+                        lifetime = 14f;
+                        strokeFrom = 4f;
+                    }});
+                    status = StatusEffects.shocked;
+                    statusDuration = 20f;
+                    smokeEffect = Fx.lancerLaserShootSmoke;
+                    hitEffect = new ExplosionEffect(){{
+                        lifetime = 21f;
+                    
+                        waveColor = Pal.surge;
+                        waveStroke = 7.5f;
+                        waveRad = 60f;
+                    
+                        sparkColor = Pal.surge;
+                        sparkStroke = 1.2f;
+                        sparkRad = 7f;
+                        sparkLen = 9f;
+                        sparks = 4;
+                    }};
+                    trailColor = Pal.surge;
+                    trailRotation = true;
+                    trailEffect = Fx.disperseTrail;
+                    trailInterval = 2f;
                     trailWidth = 3f;
-                    trailLength = 12;
-                    hitEffect = despawnEffect = Fx.hitBulletColor;
+                    trailLength = 3;
+                    fragBullets = 4;
+                    fragLifeMin = 0.3f;
+                    fragLifeMax = 0.6f;
+                    fragVelocityMin = 1.8f;
+                    fragVelocityMax = 3.6f;
+                    fragRandomSpread = 16f;
+                    fragBullet = new ArtilleryBulletType(){{
+                        collides = true;
+                        collidesTiles = true;
+                        collidesGround = true;
+                        shrinkY = 0.3f;
+                        height = 14f;
+                        width = 10f;
+                        splashDamageRadius = 16f;
+                        splashDamage = 72f;
+                        pierceBuilding = true;
+                        pierceCap = 3;
+                        lifetime = 30f;
+                        damage = 70f;
+                        pierceArmor = true;
+                        despawnEffect = Fx.none;
+                        speed = 3.5f;
+                        lightColor = Color.valueOf("#ffffff");
+                        lightOpacity = 0.8f;
+                        lightRadius = 18.5f;
+                    
+                        lightningDamage = 40;
+                        lightningLength = 6;
+                        lightning = 4;
+                    
+                        trailColor = Pal.surge;
+                        trailRotation = true;
+                        trailEffect = Fx.disperseTrail;
+                        trailInterval = 3f;
+                        trailWidth = 3f;
+                        trailLength = 3;
+                    
+                        frontColor = Color.valueOf("ffffff");
+                        backColor = Color.valueOf("ffffff");
+                    
+                        despawnEffect = new MultiEffect(
+                            new ParticleEffect(){{
+                                startDelay = 5f;
+                                particles = 4;
+                                cone = 360f;
+                                length = 7f;
+                                lifetime = 45f;
+                                sizeFrom = 2f;
+                                sizeTo = 0f;
+                                layer = 100.1f;
+                                colorFrom = Color.valueOf("ffffff");
+                                colorTo = Color.valueOf("ffffff");
+                            }},
+                            new WaveEffect(){{
+                                startDelay = 0f;
+                                sizeFrom = 0f;
+                                sizeTo = 18f;
+                                lifetime = 15f;
+                                strokeFrom = 4.5f;
+                                colorFrom = Color.valueOf("ffffff");
+                                colorTo = Color.valueOf("ffffff");
+                            }},
+                            new ParticleEffect(){{
+                                particles = 6;
+                                cone = 360f;
+                                line = true;
+                                strokeFrom = 1f;
+                                strokeTo = 0f;
+                                lenFrom = 6f;
+                                lenTo = 0f;
+                                length = 5f;
+                                colorFrom = Color.valueOf("ffffff");
+                                colorTo = Color.valueOf("ffffff");
+                                lifetime = 35f;
+                            }},
+                            new ParticleEffect(){{
+                                particles = 6;
+                                cone = 360f;
+                                line = true;
+                                strokeFrom = 1f;
+                                strokeTo = 0f;
+                                lenFrom = 6f;
+                                lenTo = 0f;
+                                length = 12f;
+                                colorFrom = Color.valueOf("ffffff");
+                                colorTo = Color.valueOf("ffffff");
+                                lifetime = 35f;
+                            }},
+                            new ParticleEffect(){{
+                                particles = 6;
+                                cone = 360f;
+                                line = true;
+                                strokeFrom = 1f;
+                                strokeTo = 0f;
+                                lenFrom = 6f;
+                                lenTo = 0f;
+                                length = 12f;
+                                colorFrom = Color.valueOf("ffffff");
+                                colorTo = Color.valueOf("ffffff");
+                                lifetime = 10f;
+                            }}
+                        );
+                    }};
                 }}
             );
+            shootSound = Sounds.artillery;
 			moveWhileCharging = false;
             ammoUseEffect = Fx.casing3;
-            range = 360f;
-            reload = 500f;
+            range = 420f;
+            reload = 400f;
             shootCone = 100f;
             scaledHealth = 210;
             inaccuracy = 1f;
             shootCone = 15f;
             size = 4;
             ammoEjectBack = 3f;
-            shoot.shots = 2;
+            shoot.shots = 3;
             shoot.shotDelay = 20f;
             consumePower(10f);
             outlineColor = Pal.darkOutline;
             recoil = 7.5f;
             recoilTime = 90f;
-            rotateSpeed = 1f;
+            rotateSpeed = 1.5f;
+                        drawer = new DrawTurret("reinforced-"){{
+                parts.add(new RegionPart("-blade"){{
+                    progress = PartProgress.recoil;
+                    heatColor = Color.valueOf("ff6214");
+                    mirror = true;
+                    under = true;
+                    moveX = 2f;
+                    moveY = -1f;
+                    moveRot = -7f;
+                }},
+                new RegionPart("-back"){{
+                    progress = PartProgress.recoil;
+                    heatProgress = PartProgress.warmup;
+                    heatColor = Color.valueOf("ff6214");
+                    drawRegion = false;
+                    mirror = true;
+                    under = true;
+                    moveX = 2f;
+                    moveY = -1f;
+                    moveRot = -7f;
+                }});
+            }};
+
         }};
 }
 }
