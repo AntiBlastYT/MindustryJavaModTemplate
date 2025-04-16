@@ -73,16 +73,12 @@ public class ErTurret {
                     speed = 20;
                     scaleLife = true;
                     hitColor = backColor = trailColor = lightningColor = Pal.surge;
-                    frontColor = Color.white;
-                    shootEffect = new MultiEffect(Fx.lancerLaserShoot, new WaveEffect(){{
-                        colorTo = Pal.surge;
-                        sizeTo = 26f;
-                        lifetime = 14f;
-                        strokeFrom = 4f;
-                    }});
+                    frontColor = Color.white;   
+                    shootEffect = Fx.instShoot;
+                    hitShake = 2f;
                     status = StatusEffects.shocked;
                     statusDuration = 20f;
-                    smokeEffect = Fx.lancerLaserShootSmoke;
+                    smokeEffect = Fx.smokeCloud;
                     hitEffect = new ExplosionEffect(){{
                         lifetime = 21f;
                     
@@ -210,9 +206,10 @@ public class ErTurret {
             shootSound = Sounds.artillery;
 			moveWhileCharging = false;
             ammoUseEffect = Fx.casing3;
-            range = 420f;
+            range = 500f;
             reload = 400f;
             shootCone = 100f;
+            ammoPerShot = 2;
             scaledHealth = 210;
             inaccuracy = 1f;
             shootCone = 15f;
@@ -220,34 +217,44 @@ public class ErTurret {
             ammoEjectBack = 3f;
             shoot.shots = 3;
             shoot.shotDelay = 20f;
-            consumePower(10f);
             outlineColor = Pal.darkOutline;
-            recoil = 7.5f;
+            recoil = 4f;
             recoilTime = 90f;
             rotateSpeed = 1.5f;
-                        drawer = new DrawTurret("reinforced-"){{
-                parts.add(new RegionPart("-blade"){{
-                    progress = PartProgress.recoil;
-                    heatColor = Color.valueOf("ff6214");
-                    mirror = true;
-                    under = true;
-                    moveX = 2f;
-                    moveY = -1f;
-                    moveRot = -7f;
-                }},
-                new RegionPart("-back"){{
-                    progress = PartProgress.recoil;
+            coolantMultiplier = 0.4f;
+            shake = 3f;
+            coolant = consumeCoolant(1f);
+            consumePower(10f);
+            drawer = new DrawTurret("reinforced-"){{
+                var heatp = PartProgress.warmup.blend(p -> Mathf.absin(2f, 1f) * p.warmup, 0.2f);
+                heatColor = Color.valueOf("ff6214");
+
+                parts.addAll(
+                new RegionPart("-blade"){{
+                    progress = heatp;
                     heatProgress = PartProgress.warmup;
                     heatColor = Color.valueOf("ff6214");
-                    drawRegion = false;
                     mirror = true;
+                    moveX = 0.5f;
+                    moves.add(new PartMove(PartProgress.recoil, 0f, -2.5f, 2.5f));
                     under = true;
-                    moveX = 2f;
-                    moveY = -1f;
-                    moveRot = -7f;
+                }},
+                    new RegionPart(""){{
+                    heatProgress = heatp;
+                    progress = PartProgress.warmup;
+                    heatColor = Color.valueOf("ff6214");
+                }},
+                new RegionPart("-back"){{
+                    heatProgress = heatp;
+                    heatColor = Color.valueOf("ff6214");
+                    progress = PartProgress.warmup;
+                    mirror = true;
+                    moveX = 2f * 2f / 3.5f;
+                    moveY = 4f;
+                    moveRot = -5f;
+                    under = true;
                 }});
             }};
 
         }};
-}
-}
+}}
