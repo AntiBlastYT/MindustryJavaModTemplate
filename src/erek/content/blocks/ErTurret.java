@@ -1,4 +1,4 @@
-package erek.content;
+package erek.content.blocks;
 
 import mindustry.ctype.*;
 import arc.graphics.*;
@@ -24,7 +24,7 @@ import mindustry.content.*;
 //import mindustry.world.blocks.campaign.LaunchPad;
 //import mindustry.world.blocks.defense.*;
 //import mindustry.world.blocks.distribution.*;
-//import mindustry.world.blocks.heat.*;
+import mindustry.world.blocks.heat.*;
 //import mindustry.world.blocks.payloads.Constructor;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.storage.*;
@@ -35,6 +35,7 @@ import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
+import erek.content.ErSounds;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -51,7 +52,7 @@ public class ErTurret {
     public static void load(){
 
         spencer = new ItemTurret("spencer") {{
-            requirements(Category.turret, with(Items.tungsten, 150, Items.silicon, 250, Items.oxide, 60, Items.surgeAlloy, 100));
+            requirements(Category.turret, with(Items.tungsten, 200, Items.silicon, 250, Items.oxide, 60, Items.surgeAlloy, 100));
             ammo(
                 Items.surgeAlloy,  new ArtilleryBulletType(3f, 12){{
                     width = 16f;
@@ -59,15 +60,15 @@ public class ErTurret {
                     lifetime = 240f;
                     collidesAir = true;
                     collidesGround = true;
-                    buildingDamageMultiplier = 0.5f;
+                    buildingDamageMultiplier = 0.2f;
                     absorbable = true;
                     hittable = false;
-                    splashDamageRadius = 100;
-                    lightningDamage = 170;
+                    splashDamageRadius = 80;
+                    lightningDamage = 80;
                     lightningLength = 9;
                     lightning = 4;
                     lightningLengthRand = 5;
-                    damage = 700;
+                    damage = 300;
                     splashDamage = 20;
                     lifetime = 19;
                     speed = 20;
@@ -79,6 +80,7 @@ public class ErTurret {
                     status = StatusEffects.shocked;
                     statusDuration = 20f;
                     smokeEffect = Fx.smokeCloud;
+                    hitSound = Sounds.spark;
                     hitEffect = new ExplosionEffect(){{
                         lifetime = 21f;
                     
@@ -105,6 +107,7 @@ public class ErTurret {
                     fragVelocityMax = 3.6f;
                     fragRandomSpread = 16f;
                     fragBullet = new ArtilleryBulletType(){{
+                        hitSound = Sounds.spark;
                         collides = true;
                         collidesTiles = true;
                         collidesGround = true;
@@ -157,8 +160,8 @@ public class ErTurret {
                                 sizeTo = 18f;
                                 lifetime = 15f;
                                 strokeFrom = 4.5f;
-                                colorFrom = Color.valueOf("ffffff");
-                                colorTo = Color.valueOf("ffffff");
+                                colorFrom = Pal.surge;
+                                colorTo = Pal.surge;
                             }},
                             new ParticleEffect(){{
                                 particles = 6;
@@ -203,7 +206,7 @@ public class ErTurret {
                     }};
                 }}
             );
-            shootSound = Sounds.artillery;
+            shootSound = ErSounds.spencerartillery;
 			moveWhileCharging = false;
             ammoUseEffect = Fx.casing3;
             range = 500f;
@@ -221,10 +224,8 @@ public class ErTurret {
             recoil = 4f;
             recoilTime = 90f;
             rotateSpeed = 1.5f;
-            coolantMultiplier = 0.4f;
             shake = 3f;
-            coolant = consumeCoolant(1f);
-            consumePower(10f);
+            consumePower(8f);
             drawer = new DrawTurret("reinforced-"){{
                 var heatp = PartProgress.warmup.blend(p -> Mathf.absin(2f, 1f) * p.warmup, 0.2f);
                 heatColor = Color.valueOf("ff6214");
