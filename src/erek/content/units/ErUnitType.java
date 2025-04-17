@@ -1,6 +1,7 @@
 package erek.content.units;
 
 import arc.graphics.Color;
+import mindustry.graphics.Pal;
 import mindustry.type.ItemStack;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
@@ -9,7 +10,7 @@ import mindustry.type.ammo.PowerAmmoType;
 
 
 public class ErUnitType extends UnitType{
-    public static final Color OColor = Color.valueOf("2d2f39");
+    public static final Color OColor = Pal.darkOutline;
 
     public ErUnitType(String name) {
         super(name);

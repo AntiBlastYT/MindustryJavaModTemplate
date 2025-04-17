@@ -33,30 +33,44 @@ public class ErUnits{
 
 
 
-    public static ErekirUnitType wisp;
+    public static ErUnitType wisp;
 
     public static void load(){
 
-        	wisp = new ErekirUnitType("Wisp"){{
+        	wisp = new ErUnitType("wisp"){{
 			aiController = RepairAI::new;
 			defaultCommand = UnitCommand.repairCommand;
 			constructor = EntityMapping.map(3);
-            weapons.add(new RepairBeamWeapon("repair-beam-weapon-center"){{
-				y = -2.5f;
-				x = 0;
-				shootY = 6f;
-				mirror = false;
-				beamWidth = 0.6f;
-				repairSpeed = 0.6f;
+            weapons.add(new RepairBeamWeapon(){{
+                widthSinMag = 0.11f;
+                reload = 20f;
+                x = 0f;
+                y = 6.5f;
+                rotate = false;
+                shootY = 0f;
+                beamWidth = 0.7f;
+                repairSpeed = 3.1f;
+                fractionRepairSpeed = 0.06f;
+                aimDst = 0f;
+                shootCone = 15f;
+                mirror = false;
 
-				bullet = new BulletType(){{
-					maxRange = 60f;
-				}};
+                targetUnits = false;
+                targetBuildings = true;
+                autoTarget = false;
+                controllable = true;
+                laserColor = Pal.accent;
+                healColor = Pal.accent;
+
+                bullet = new BulletType(){{
+                    maxRange = 60f;
+                }};
 			}});
 			armor = 0;
 			hitSize = 8f;
 			flying = true;
 			drag = 0.06F;
+            faceTarget = true;
 			accel = 0.12F;
 			itemCapacity = 15;
 			speed = 1.2F;
