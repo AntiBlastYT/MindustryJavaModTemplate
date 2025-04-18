@@ -22,6 +22,7 @@ public class ExampleJavaMod extends Mod{
         ErSounds.load();
         ErTurret.load();
         ErUnits.load();
+        ErUnitBlocks.load();
     }
 
 }

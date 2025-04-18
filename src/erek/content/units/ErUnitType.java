@@ -7,9 +7,10 @@ import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.ammo.ItemAmmoType;
 import mindustry.type.ammo.PowerAmmoType;
+import mindustry.type.unit.ErekirUnitType;
 
 
-public class ErUnitType extends UnitType{
+public class ErUnitType extends ErekirUnitType{
     public static final Color OColor = Pal.darkOutline;
 
     public ErUnitType(String name) {

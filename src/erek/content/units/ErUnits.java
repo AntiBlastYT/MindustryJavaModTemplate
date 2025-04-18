@@ -31,8 +31,6 @@ import static mindustry.Vars.*;
 
 public class ErUnits{
 
-
-
     public static ErUnitType wisp;
 
     public static void load(){
@@ -48,8 +46,8 @@ public class ErUnits{
                 y = 6.5f;
                 rotate = false;
                 shootY = 0f;
-                beamWidth = 0.7f;
-                repairSpeed = 3.1f;
+                beamWidth = 0.6f;
+                repairSpeed = 3f;
                 fractionRepairSpeed = 0.06f;
                 aimDst = 0f;
                 shootCone = 15f;
@@ -73,7 +71,7 @@ public class ErUnits{
             faceTarget = true;
 			accel = 0.12F;
 			itemCapacity = 15;
-			speed = 1.2F;
+			speed = 1.8F;
 			health = 300.0F;
 			engineSize = 1.4F;
 			engineOffset = 5.7F;
