@@ -6,6 +6,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import erek.content.ai.ErMinerAI;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
 import mindustry.content.Items;
@@ -82,53 +83,53 @@ public class ErUnits{
 		};
     };
         nanite = new ErUnitType("nanite"){{
-        aiController = RepairAI::new;
-        defaultCommand = UnitCommand.mineCommand;
-        constructor = EntityMapping.map(3);
-        weapons.add(new RepairBeamWeapon(){{
-            widthSinMag = 0.11f;
-            reload = 20f;
-            x = 0f;
-            y = 6.5f;
-            rotate = false;
-            shootY = 0f;
-            beamWidth = 0.6f;
-            repairSpeed = 5f;
-            fractionRepairSpeed = 0.06f;
-            aimDst = 0f;
-            shootCone = 15f;
-            mirror = false;
+			aiController = ErMinerAI::new;
+			defaultCommand = UnitCommand.mineCommand;
+			constructor = EntityMapping.map(3);
+            weapons.add(new RepairBeamWeapon(){{
+                widthSinMag = 0.11f;
+                reload = 20f;
+                x = 0f;
+                y = 6.5f;
+                rotate = false;
+                shootY = 0f;
+                beamWidth = 0.6f;
+                repairSpeed = 3f;
+                fractionRepairSpeed = 0.06f;
+                aimDst = 0f;
+                shootCone = 15f;
+                mirror = false;
 
-            targetUnits = false;
-            targetBuildings = true;
-            autoTarget = false;
-            controllable = true;
-            laserColor = Pal.accent;
-            healColor = Pal.accent;
+                targetUnits = false;
+                targetBuildings = true;
+                autoTarget = false;
+                controllable = true;
+                laserColor = Pal.accent;
+                healColor = Pal.accent;
 
-            bullet = new BulletType(){{
-                maxRange = 90f;
-            }};
-        }});
-        armor = 2;
-        hitSize = 10f;
-        flying = true;
-        drag = 0.05F;
-        faceTarget = true;
-        accel = 0.1F;
-        itemCapacity = 40;
-        speed = 1.8F;
-        health = 900.0F;
-        engineSize = 2F;
-        engineOffset = 6.5F;
-        range = 90.0F;
-        isEnemy = false;
-        lowAltitude = true;
-        mineWalls = true;
-        mineFloor = false;
-        mineHardnessScaling = false;
-        mineSpeed = 6f;
-        mineTier = 3;
+                bullet = new BulletType(){{
+                    maxRange = 60f;
+                }};
+			}});
+			armor = 1;
+			hitSize = 14f;
+			flying = true;
+			drag = 0.06F;
+			accel = 0.12F;
+			itemCapacity = 40;
+			speed = 1.6F;
+			health = 800.0F;
+			engineSize = 3.4F;
+			engineOffset = 9.2F;
+			range = 80.0F;
+			isEnemy = false;
+			mineTier = 3;
+			mineSpeed = 6F;
+            mineWalls = true;
+            mineFloor = true;
+			lowAltitude = true;
+			
+			mineItems.addAll(Items.beryllium, Items.graphite);
     };
 };
 }
