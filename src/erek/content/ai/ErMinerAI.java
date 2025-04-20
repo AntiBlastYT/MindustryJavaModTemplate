@@ -50,7 +50,34 @@ public class ErMinerAI extends MinerAI{
     private Seq<Building> breturnArray = new Seq<>(Building.class);
     /** Maps block flag to a list of floor tiles that have it. */
     private Seq<Tile>[] floorMap;
+    
 
+    public Tile findClosestOre(float xp, float yp, Item item){
+        if(ores[item.id] != null){
+            float minDst = 0f;
+            Tile closest = null;
+            for(int qx = 0; qx < quadWidth; qx++){
+                for(int qy = 0; qy < quadHeight; qy++){
+                    var arr = ores[item.id][qx][qy];
+                    if(arr != null && arr.size > 0){
+                        Tile tile = world.tile(arr.first());
+                        if(tile.block() == Blocks.air){
+                            float dst = Mathf.dst2(xp, yp, tile.worldx(), tile.worldy());
+                            if(closest == null || dst < minDst){
+                                closest = tile;
+                                minDst = dst;
+                            }
+                        }
+                    }
+                }
+            }
+            return closest;
+        }
+
+        return null;
+    }
+
+    /** Find the closest ore wall relative to a position. */
     public Tile findClosestWallOre(float xp, float yp, Item item){
         //(stolen from foo's client :))))
         if(wallOres[item.id] != null){
@@ -76,10 +103,17 @@ public class ErMinerAI extends MinerAI{
 
         return null;
     }
-        /** Find the closest ore block relative to a position. */
-        public Tile findClosestWallOre(Unit unit, Item item){
-            return findClosestWallOre(unit.x, unit.y, item);
-        }
+
+    /** Find the closest ore block relative to a position. */
+    public Tile findClosestOre(Unit unit, Item item){
+        return findClosestOre(unit.x, unit.y, item);
+    }
+
+    /** Find the closest ore block relative to a position. */
+    public Tile findClosestWallOre(Unit unit, Item item){
+        return findClosestWallOre(unit.x, unit.y, item);
+    }
+
     @Override
     public void updateMovement(){
         Building core = unit.closestCore();
@@ -108,8 +142,8 @@ public class ErMinerAI extends MinerAI{
             }else{
                 if(timer.get(timerTarget3, 60) && targetItem != null){
                     ore = null;
-                    if(unit.type.mineWalls) ore = findClosestWallOre(unit, targetItem);
-                    if(ore == null && unit.type.mineFloor) ore = indexer.findClosestOre(unit, targetItem);
+                    if(unit.type.mineWalls = true) ore = findClosestWallOre(unit, targetItem);
+                    if(ore == null && unit.type.mineFloor) ore = findClosestOre(unit, targetItem);
                 }
 
                 if(ore != null){

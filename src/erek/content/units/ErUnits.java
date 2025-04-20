@@ -9,6 +9,7 @@ import arc.util.*;
 import erek.content.ai.ErMinerAI;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
+import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.*;
@@ -62,9 +63,16 @@ public class ErUnits{
                 healColor = Pal.accent;
 
                 bullet = new BulletType(){{
-                    maxRange = 60f;
+                    maxRange = 100f;
                 }};
 			}});
+            deathExplosionEffect = new Effect(30f, e -> {
+                // Visual effect
+                Fx.scatheLight.at(e.x, e.y);
+        
+                // Apply splash damage
+                Damage.damage(e.x, e.y, 60f, 5f); // radius, damage
+            });
 			armor = 0;
 			hitSize = 8f;
 			flying = true;
@@ -83,7 +91,7 @@ public class ErUnits{
 		};
     };
         nanite = new ErUnitType("nanite"){{
-			aiController = ErMinerAI::new;
+			aiController = MinerAI::new;
 			defaultCommand = UnitCommand.mineCommand;
 			constructor = EntityMapping.map(3);
             weapons.add(new RepairBeamWeapon(){{
