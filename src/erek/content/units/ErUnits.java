@@ -7,6 +7,10 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import erek.content.ai.ErMinerAI;
+import erek.content.bullets.ReflectingLaserBulletType;
+import erek.content.effects.ChargeFx;
+import erek.content.effects.HitFx;
+import erek.content.utils.*;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
 import mindustry.content.Fx;
@@ -17,7 +21,10 @@ import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
+import mindustry.entities.part.DrawPart.PartProgress;
 import mindustry.entities.pattern.*;
+import mindustry.entities.units.*;
+import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -25,6 +32,7 @@ import mindustry.type.ammo.*;
 import mindustry.type.unit.*;
 import mindustry.type.weapons.*;
 import mindustry.world.meta.*;
+import erek.content.bullets.*;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -33,7 +41,7 @@ import static mindustry.Vars.*;
 
 public class ErUnits{
 
-    public static ErUnitType wisp, nanite;
+    public static ErUnitType wisp, nanite, bastion;
 
     public static void load(){
 
@@ -66,12 +74,23 @@ public class ErUnits{
                     maxRange = 100f;
                 }};
 			}});
-            deathExplosionEffect = new Effect(30f, e -> {
-                // Visual effect
-                Fx.scatheLight.at(e.x, e.y);
+            deathExplosionEffect = new Effect(1, e -> {
+                Fx.scatheExplosion.at(e.x, e.y);
+                float radius = 60f;
+                float damage = 80f;
+                Team team = e.data instanceof Teamc ? ((Teamc)e.data).team() : Team.derelict;
         
-                // Apply splash damage
-                Damage.damage(e.x, e.y, 60f, 5f); // radius, damage
+                Groups.unit.intersect(e.x - radius, e.y - radius, radius * 2, radius * 2, u -> {
+                    if (u.team != team && !u.dead && u.dst(e.x, e.y) <= radius) {
+                        u.damage(damage);
+                    }
+                });
+        
+                Groups.build.each(b -> {
+                    if (b.team != team && b.dst(e.x, e.y) <= radius) {
+                        b.damage(damage);
+                    }
+                });
             });
 			armor = 0;
 			hitSize = 8f;
@@ -84,7 +103,7 @@ public class ErUnits{
 			health = 300.0F;
 			engineSize = 1.4F;
 			engineOffset = 5.7F;
-			range = 60.0F;
+			range = 100.0F;
 			isEnemy = false;
 			lowAltitude = true;
             mineTier = 0;
@@ -139,6 +158,78 @@ public class ErUnits{
 			
 			mineItems.addAll(Items.beryllium, Items.graphite);
     };
+};
+bastion = new ErUnitType("bastion"){{
+    aiController = MinerAI::new;
+    defaultCommand = UnitCommand.mineCommand;
+    constructor = EntityMapping.map(3);
+            setEnginesMirror(
+            new UnitEngine(30 / 4f, -26 / 4f, 3.1f, 315f)
+            );
+
+            parts.add(
+            new RegionPart("-tip"){{
+                moveRot = 0f;
+                moveX = -1f;
+                moves.add(new PartMove(PartProgress.reload, 2f, 1f, 0f));
+                progress = PartProgress.warmup;
+                mirror = false;
+
+                children.add(new RegionPart("-blade"){{
+                    moveX = 2f;
+                    moveY = -2f;
+                    progress = PartProgress.warmup;
+                    under = true;
+                    mirror = false;
+                    moves.add(new PartMove(PartProgress.reload, -2f, 2f, 0f));
+                }});
+            }});
+            weapons.add(new Weapon(){{
+                x = 0f;
+                y = 8.25f;
+                mirror = false;
+                reload = 4f * 60f;
+                recoil = 0f;
+                shootSound = Sounds.lasershoot;
+                shootStatus = StatusEffects.slow;
+                shootStatusDuration = 80f;
+                shoot.firstShotDelay = ChargeFx.greenLaserChargeParent.lifetime;
+
+                bullet = new ReflectingLaserBulletType(500f){{
+                    lifetime = 65f;
+                    shootEffect = ChargeFx.greenLaserChargeParent;
+                    healPercent = 6f;
+                    splashDamage = 70f;
+                    splashDamageRadius = 30f;
+                    lightningDamage = 75f;
+                    hitEffect = HitFx.coloredHitLarge;
+                    hitColor = lightningColor = Pal.heal;
+                    pierceCap = 3;
+                    collidesTeam = true;
+                    lightningLength = 12;
+                    colors = new Color[]{Pal.surge.cpy().a(0.2f), Pal.surge.cpy().a(0.5f), Pal.surge.cpy().mul(1.2f), Color.white};
+                }};
+            }});
+    armor = 1;
+    hitSize = 21f;
+    flying = true;
+    drag = 0.05F;
+    accel = 0.10F;
+    itemCapacity = 40;
+    speed = 1.3F;
+    health = 800.0F;
+    engineSize = 3.4F;
+    engineOffset = 9.2F;
+    range = 120.0F;
+    isEnemy = false;
+    mineTier = 5;
+    mineSpeed = 6F;
+    mineWalls = true;
+    mineFloor = true;
+    lowAltitude = true;
+    
+    mineItems.addAll(Items.beryllium, Items.graphite);
+};
 };
 }
 }

@@ -5,8 +5,11 @@ import arc.util.*;
 import erek.content.ErSounds;
 import erek.content.blocks.*;
 import erek.content.units.*;
+import erek.content.utils.*;
+import erek.content.bullets.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
+import erek.content.utils.*;;
 
 public class ExampleJavaMod extends Mod{
 
@@ -23,6 +26,7 @@ public class ExampleJavaMod extends Mod{
         ErTurret.load();
         ErUnits.load();
         ErUnitBlocks.load();
+        Utils.init();
     }
 
 }
