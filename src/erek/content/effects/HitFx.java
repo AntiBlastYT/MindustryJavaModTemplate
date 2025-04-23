@@ -31,7 +31,7 @@ public final class HitFx{
             Fill.circle(e.x, e.y, rad);
         });
 
-        color(Pal.heal);
+        color(Pal.surge);
         stroke(e.fout() * 3f);
         Lines.circle(e.x, e.y, rad);
 

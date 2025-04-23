@@ -16,7 +16,7 @@ public final class ChargeFx{
     public static final Effect
 
     greenLaserChargeParent = new ParentEffect(80f, 100f, e -> {
-        color(Pal.heal);
+        color(Pal.surge);
         stroke(e.fin() * 2f);
         Lines.circle(e.x, e.y, 4f + e.fout() * 100f);
 
@@ -30,12 +30,12 @@ public final class ChargeFx{
         color();
 
         Fill.circle(e.x, e.y, e.fin() * 10);
-        Drawf.light(e.x, e.y, e.fin() * 20f, Pal.heal, 0.7f);
+        Drawf.light(e.x, e.y, e.fin() * 20f, Pal.surge, 0.7f);
     }),
 
     sagittariusCharge = new Effect(2f * 60f, e -> {
         float size = e.fin() * 15f;
-        color(Pal.heal);
+        color(Pal.surge);
         Fill.circle(e.x, e.y, size);
         MathU.randLenVectors(e.id * 9999L, 15, e.fout(), 0.5f, 0.6f, 0.2f,
             f -> f * f * f * 90f, (ex, ey, fin) -> {

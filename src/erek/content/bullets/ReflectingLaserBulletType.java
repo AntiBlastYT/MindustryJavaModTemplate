@@ -17,11 +17,11 @@ public class ReflectingLaserBulletType extends BulletType{
     private final static Vec2 vec = new Vec2();
 
     public Color[] colors = {};
-    public float length = 500f, reflectLength = 200f;
-    public float width = 65f, lengthFalloff = 0.5f;
-    public float reflectRange = 80f, reflectLoss = 0.75f;
-    public float minimumTargetLength = 70f;
-    public int reflections = 5;
+    public float length = 150f, reflectLength = 100f;
+    public float width = 10f, lengthFalloff = 0.5f;
+    public float reflectRange = 90f, reflectLoss = 0.75f;
+    public float minimumTargetLength = 40f;
+    public int reflections = 3;
     public int reflectLightning = 10;
 
     public ReflectingLaserBulletType(float damage){
