@@ -12,7 +12,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import erek.content.utils.*;
 
-public class ReflectingLaserBulletType extends BulletType{
+public class ReflectingLaserBulletType extends LaserBulletType{
     private static int p = 0;
     private final static Vec2 vec = new Vec2();
 
@@ -25,7 +25,7 @@ public class ReflectingLaserBulletType extends BulletType{
     public int reflectLightning = 10;
 
     public ReflectingLaserBulletType(float damage){
-        super(0f, damage);
+        super(damage);
         lifetime = 16f;
         impact = true;
         keepVelocity = false;

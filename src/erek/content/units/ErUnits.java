@@ -6,6 +6,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import erek.content.ErSounds;
 import erek.content.ai.ErMinerAI;
 import erek.content.bullets.ReflectingLaserBulletType;
 import erek.content.effects.ChargeFx;
@@ -163,7 +164,7 @@ bastion = new ErUnitType("bastion"){{
     defaultCommand = UnitCommand.assistCommand;
     constructor = EntityMapping.map(3);
             setEnginesMirror(
-            new UnitEngine(30 / 4f, -34 / 4f, 3.1f, 315f)
+            new UnitEngine(30 / 4f, -32 / 4f, 3.1f, 315f)
             );
 
             parts.add(
@@ -182,29 +183,33 @@ bastion = new ErUnitType("bastion"){{
                     moves.add(new PartMove(PartProgress.reload, 0f, 0f, 0f));
                 }});
             }});
+            
             weapons.add(new Weapon(){{
                 x = 0f;
                 y = 8.25f;
                 mirror = false;
                 reload = 4f * 60f;
-                shootSound = Sounds.lasershoot;
+                shootSound = ErSounds.bastionlaser;
                 shootStatus = StatusEffects.slow;
                 shoot.firstShotDelay =  0f;
 
                 bullet = new ReflectingLaserBulletType(50f){{
-                    lifetime = 60f;
-                    shootEffect = Fx.lancerLaserShoot;
-                    healPercent = 12f;
+                    lifetime = 40f;
+                    shootEffect = ChargeFx.bouncingLaserShoot;
+                    healPercent = 10f;
                     splashDamage = 10f;
                     splashDamageRadius = 10f;
                     lightningDamage = 10f;
                     hitEffect = HitFx.coloredHitLarge;
-                    hitColor = lightningColor = Pal.heal;
+                    hitColor = lightningColor = Pal.surge;
                     pierceCap = 1;
+                    targetGround = true;
+                    targetAir = true;
                     collidesTeam = true;
                     lightningLength = 6; 
-                    colors = new Color[]{Pal.surge.cpy().a(0f), Pal.surge.cpy().a(0.5f), Pal.surge.cpy().mul(1.2f), Color.white};
+                    colors = new Color[]{Pal.surge.cpy().a(0f), Pal.surge.cpy().a(0.5f), Pal.surge.cpy().mul(1f), Color.white};
                 }};
+                
             }});
     armor = 4;
     hitSize = 24f;
@@ -215,7 +220,7 @@ bastion = new ErUnitType("bastion"){{
     itemCapacity = 60;
     health = 2000.0F;
     engineSize = 3.4F;
-    engineOffset = 16.2F;
+    engineOffset = 14.2F;
     range = 120.0F;
     isEnemy = false;
     mineTier = 3;

@@ -11,12 +11,14 @@ import static mindustry.Vars.*;
 public class ErSounds{
     public static Sound
 
-    spencerartillery = new Sound();
+    spencerartillery = new Sound(),
+    bastionlaser = new Sound();
 
     public static void load() {
         if(Vars.headless) return;
 
         spencerartillery = Vars.tree.loadSound("spencer-audio");
+        bastionlaser = Vars.tree.loadSound("bastion-laser-audio");
     }
 
     protected static String soundPath(String soundName){

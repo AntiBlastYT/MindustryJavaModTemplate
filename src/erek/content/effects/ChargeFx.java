@@ -52,9 +52,17 @@ public final class ChargeFx{
 
         color(Color.white);
         Fill.circle(e.x, e.y, size * 0.5f);
-    }).followParent(true).rotWithParent(true);
+    }).followParent(true).rotWithParent(true),
 
+    bouncingLaserShoot = new Effect(21f, e -> {
+        color(Pal.surge);
+
+        for(int i : Mathf.signs){
+            Drawf.tri(e.x, e.y, 4f * e.fout(), 29f, e.rotation + 45f * i);
+        }
+    });
     private ChargeFx(){
         throw new AssertionError();
     }
+    
 }
