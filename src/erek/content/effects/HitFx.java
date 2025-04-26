@@ -3,6 +3,7 @@ package erek.content.effects;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.util.Tmp;
 import mindustry.entities.*;
 import mindustry.graphics.*;
 
@@ -81,6 +82,8 @@ public final class HitFx{
         Drawf.light(e.x, e.y, 60f, Pal.missileYellowBack, 0.8f * e.fout());
     }),
 
+
+
     hitExplosionMassive = new Effect(70f, 370f, e -> {
         e.scaled(17f, s -> {
             color(Color.white, Color.lightGray, e.fin());
@@ -112,6 +115,33 @@ public final class HitFx{
         Lines.circle(e.x, e.y, e.fin() * 6f);
     });
 
+	public static Effect smoothColorCircle(Color out, float rad, float lifetime){
+		return new Effect(lifetime, rad * 2, e -> {
+			Draw.blend(Blending.additive);
+			float radius = e.fin(Interp.pow3Out) * rad;
+			Fill.light(e.x, e.y, circleVertices(radius), radius, Color.clear, Tmp.c1.set(out).a(e.fout(Interp.pow5Out)));
+			Drawf.light(e.x, e.y, radius * 1.3f, out, 0.7f * e.fout(0.23f));
+			Draw.blend();
+		}).layer(Layer.effect + 0.15f);
+	}
+
+	public static Effect smoothColorCircle(Color out, float rad, float lifetime, float alpha){
+		return new Effect(lifetime, rad * 2, e -> {
+			Draw.blend(Blending.additive);
+			float radius = e.fin(Interp.pow3Out) * rad;
+			Fill.light(e.x, e.y, circleVertices(radius), radius, Color.clear, Tmp.c1.set(out).a(e.fout(Interp.pow5Out) * alpha));
+			Drawf.light(e.x, e.y, radius * 1.3f, out, 0.7f * e.fout(0.23f));
+			Draw.blend();
+		}).layer(Layer.effect + 0.15f);
+	}
+    public static Effect circleOut(float lifetime, float radius, float thick){
+		return new Effect(lifetime, radius * 2f, e -> {
+			Draw.color(e.color, Color.white, e.fout() * 0.7f);
+			Lines.stroke(thick * e.fout());
+			Lines.circle(e.x, e.y, radius * e.fin(Interp.pow3Out));
+		});
+	}
+    
     private HitFx(){
         throw new AssertionError();
     }

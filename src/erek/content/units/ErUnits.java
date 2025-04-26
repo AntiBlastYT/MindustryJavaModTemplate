@@ -8,12 +8,12 @@ import arc.struct.*;
 import arc.util.*;
 import erek.content.ErSounds;
 import erek.content.ai.ErMinerAI;
-import erek.content.bullets.ReflectingLaserBulletType;
 import erek.content.effects.ChargeFx;
 import erek.content.effects.HitFx;
 import erek.content.utils.*;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
+import mindustry.content.Bullets;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
@@ -42,7 +42,7 @@ import static mindustry.Vars.*;
 
 public class ErUnits{
 
-    public static ErUnitType wisp, nanite, bastion;
+    public static ErUnitType wisp, nanite, bastion, remedy;
 
     public static void load(){
 
@@ -188,7 +188,7 @@ bastion = new ErUnitType("bastion"){{
                 x = 0f;
                 y = 8.25f;
                 mirror = false;
-                reload = 4f * 60f;
+                reload = 10f * 60f;
                 shootSound = ErSounds.bastionlaser;
                 shootStatus = StatusEffects.slow;
                 shoot.firstShotDelay =  0f;
@@ -230,8 +230,114 @@ bastion = new ErUnitType("bastion"){{
     mineWalls = true;
     mineFloor = true;
     lowAltitude = true;
+    payloadCapacity = Mathf.sqr(2f) * tilePayload;
     
     mineItems.addAll(Items.beryllium, Items.graphite, Items.tungsten);
+};
+};
+remedy = new ErUnitType("remedy"){{
+    aiController = FlyingFollowAI::new;
+    constructor = EntityMapping.map(3);
+            setEnginesMirror(
+            new UnitEngine(55 / 4f, -60 / 4f, 3.1f, 315f),
+            new UnitEngine(30 / 6f, -70 / 4f, 3.1f, 0f)
+            );
+
+            parts.add(
+            new RegionPart("-tip"){{
+                moveY = 1f;
+                moves.add(new PartMove(PartProgress.reload, 0f, -1f, 0f));
+                progress = PartProgress.warmup;
+                mirror = false;
+
+                children.add(new RegionPart("-blade"){{
+                    moveX = 0f;
+                    moveY = 1f;
+                    progress = PartProgress.warmup;
+                    under = true;
+                    mirror = false;
+                    moves.add(new PartMove(PartProgress.reload, 0f, 0f, 0f));
+                }});
+            }});
+            weapons.add(new Weapon("remedy-emp"){{
+                rotate = false;
+                mirror = false;
+                reload = 300f;
+                shake = 3f;
+                rotateSpeed = 2f;
+                shootY = 30f;
+                recoil = 4f;
+                cooldownTime = reload - 10f;
+                shootSound = Sounds.laser;
+
+                bullet = new EmpBulletType(){{
+                    damage = 40;
+                    powerDamageScl = 3f;
+                    speed = 4f;
+                    lifetime = 40f;
+                    hitShake = despawnShake = 1.2f;
+                    hitSound = Sounds.none;
+                    healPercent = 20f;
+                    lightRadius = 10f;
+
+                    fragBullet = new DOTBulletType(){{
+                        DOTDamage = damage = 4f;
+                        DOTRadius = 12f;
+                        radIncrease = 0.25f;
+                        fx = Fx.scatheSlash;
+                        lightningColor = Pal.surge;
+                    }};
+                    sprite = "large-orb";
+                    fragBullets = 1;
+
+                    
+                    trailColor = Pal.surge;
+                    trailRotation = true;
+                    trailEffect = Fx.shootSmokeSquare;
+                    trailInterval = 3f;
+                    trailWidth = 3f;
+                    trailLength = 3;
+
+                    backColor = lightColor = lightningColor = trailColor = hitColor = Pal.surge;
+
+                    despawnEffect = Fx.none;
+                    hitEffect = new MultiEffect(
+                        HitFx.smoothColorCircle(Pal.surge, 78f, 150f, 0.6f),
+                        HitFx.smoothColorCircle(Color.valueOf("ffffff"), 78f, 150f, 0.2f),
+                        HitFx.circleOut(70, 60f, 2)
+                    );
+                    };
+                };
+            }});
+            abilities.add(new ShieldTurret(){{
+				radius = hitSize + 60f;
+				angle = 120;
+				regen = 1f;
+				cooldown = 60f * 10f;
+				max = 3000f;
+				width = 9f;
+				drawWidth = 4f;
+				whenShooting = false;
+			}});
+    armor = 5;
+    hitSize = 34f;
+    flying = true;
+    speed = 1f;
+    accel = 0.04f;
+    drag = 0.04f;
+    rotateSpeed = 0.9f;
+    itemCapacity = 160;
+    health = 4000.0F;
+    engineSize = 0F;
+    engineOffset = 14.2F;
+    range = 120.0F;
+    isEnemy = false;
+    payloadCapacity = Mathf.sqr(3f) * tilePayload;
+    mineTier = 0;
+    buildSpeed = 2.4f;
+    buildBeamOffset = 19;
+    lowAltitude = false;
+    
 };
 };
 }
