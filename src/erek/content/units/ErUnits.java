@@ -1,5 +1,6 @@
 package erek.content.units;
 
+import arc.freetype.FreeType.Size;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -8,8 +9,7 @@ import arc.struct.*;
 import arc.util.*;
 import erek.content.ErSounds;
 import erek.content.ai.ErMinerAI;
-import erek.content.effects.ChargeFx;
-import erek.content.effects.HitFx;
+import erek.content.effects.*;
 import erek.content.utils.*;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
@@ -240,7 +240,7 @@ remedy = new ErUnitType("remedy"){{
     constructor = EntityMapping.map(3);
             setEnginesMirror(
             new UnitEngine(55 / 4f, -60 / 4f, 3.1f, 315f),
-            new UnitEngine(30 / 6f, -70 / 4f, 3.1f, 0f)
+            new UnitEngine(30 / 6f, -70 / 4f, 3.1f, 270f)
             );
 
             parts.add(
@@ -272,40 +272,41 @@ remedy = new ErUnitType("remedy"){{
 
                 bullet = new EmpBulletType(){{
                     damage = 40;
-                    powerDamageScl = 3f;
-                    speed = 4f;
-                    lifetime = 40f;
+                    speed = 3f;
+                    lifetime = 60f;
                     hitShake = despawnShake = 1.2f;
+                    hitEffect = Fx.massiveExplosion;
+                    status = StatusEffects.electrified;
                     hitSound = Sounds.none;
-                    healPercent = 20f;
-                    lightRadius = 10f;
 
-                    fragBullet = new DOTBulletType(){{
-                        DOTDamage = damage = 4f;
-                        DOTRadius = 12f;
-                        radIncrease = 0.25f;
-                        fx = Fx.scatheSlash;
-                        lightningColor = Pal.surge;
+                    fragBullet = new ReflectingLaserBulletType(20f){{
+                        lifetime = 40f;
+                        shootEffect = ChargeFx.bouncingLaserShoot;
+                        healPercent = 2.5f;
+                        splashDamage = 10f;
+                        splashDamageRadius = 5f;
+                        lightningDamage = 10f;
+                        hitEffect = HitFx.coloredHitLarge;
+                        hitColor = lightningColor = Pal.surge;
+                        pierceCap = 1;
+                        targetGround = true;
+                        targetAir = true;
+                        collidesTeam = true;
+                        lightningLength = 6; 
+                        colors = new Color[]{Pal.surge.cpy().a(0f), Pal.surge.cpy().a(0.4f), Pal.surge.cpy().mul(0.8f), Color.white};
                     }};
-                    sprite = "large-orb";
-                    fragBullets = 1;
+                    fragBullets = 3;
+                    fragRandomSpread = 40f;
+                    fragSpread = 120f;
+                    healPercent = 10f;
 
-                    
-                    trailColor = Pal.surge;
-                    trailRotation = true;
-                    trailEffect = Fx.shootSmokeSquare;
-                    trailInterval = 3f;
-                    trailWidth = 3f;
-                    trailLength = 3;
+                    trailChance = 0.8f;
+                    trailEffect = ChargeFx.triSpark1;
 
                     backColor = lightColor = lightningColor = trailColor = hitColor = Pal.surge;
 
-                    despawnEffect = Fx.none;
-                    hitEffect = new MultiEffect(
-                        HitFx.smoothColorCircle(Pal.surge, 78f, 150f, 0.6f),
-                        HitFx.smoothColorCircle(Color.valueOf("ffffff"), 78f, 150f, 0.2f),
-                        HitFx.circleOut(70, 60f, 2)
-                    );
+                    despawnEffect = HitFx.surgeBlast;
+                    
                     };
                 };
             }});
@@ -318,7 +319,16 @@ remedy = new ErUnitType("remedy"){{
 				width = 9f;
 				drawWidth = 4f;
 				whenShooting = false;
-			}});
+			}},(new ShieldTurret(){{
+				radius = hitSize + 56f;
+				angle = 60;
+				regen = 1f;
+				cooldown = 60f * 10f;
+				max = 3000f;
+				width = 9f;
+				drawWidth = 4f;
+				whenShooting = false;
+			}}));
     armor = 5;
     hitSize = 34f;
     flying = true;

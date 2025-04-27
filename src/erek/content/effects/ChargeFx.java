@@ -11,8 +11,10 @@ import erek.content.utils.*;
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.*;
+import static arc.math.Angles.randLenVectors;
 
 public final class ChargeFx{
+	private static final Rand rand = new Rand();
     public static final Effect
 
     greenLaserChargeParent = new ParentEffect(80f, 100f, e -> {
@@ -60,6 +62,15 @@ public final class ChargeFx{
         for(int i : Mathf.signs){
             Drawf.tri(e.x, e.y, 4f * e.fout(), 29f, e.rotation + 45f * i);
         }
+    }),
+
+    triSpark1 = new Effect(26, e -> {
+        rand.setSeed(e.id);
+        Draw.color(Pal.surge, Color.white, e.fin());
+        randLenVectors(e.id, 3, 3f + 24f * e.fin(), 5f, (x, y) -> {
+            float randN = rand.random(120f);
+            Fill.poly(e.x + x, e.y + y, 4, e.fout() * 8f * rand.random(0.8f, 1.2f), e.rotation + randN * e.fin());
+        });
     });
     private ChargeFx(){
         throw new AssertionError();

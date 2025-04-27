@@ -104,7 +104,24 @@ public final class HitFx{
         randLenVectors(e.id + 1, 14, 1f + 160f * e.finpow(), (x, y) ->
             lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + e.fout() * 3f));
     }),
+    surgeBlast = new Effect(50f, 100f, e -> {
+        color(Pal.surge);
+        stroke(e.fout() * 2f);;
+        float circleRad = 4f + e.finpow() * 30f;
+        Lines.circle(e.x, e.y, circleRad);
+        Drawf.light(e.x, e.y, circleRad * 1f, Pal.surge, e.fout());
 
+        color(Pal.surge);
+        for(int i = 0; i < 4; i++){
+            Drawf.tri(e.x, e.y, 5f, 90f * e.fout(), i*90);
+        }
+
+        color();
+        for(int i = 0; i < 4; i++){
+            Drawf.tri(e.x, e.y, 2f, 30f * e.fout(), i*90);
+        }
+
+    }),
     branchFragHit = new Effect(8f, e -> {
         color(Color.white, Pal.lancerLaser, e.fin());
 
@@ -140,8 +157,9 @@ public final class HitFx{
 			Lines.stroke(thick * e.fout());
 			Lines.circle(e.x, e.y, radius * e.fin(Interp.pow3Out));
 		});
-	}
-    
+    	}
+
+
     private HitFx(){
         throw new AssertionError();
     }
