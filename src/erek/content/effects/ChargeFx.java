@@ -71,6 +71,21 @@ public final class ChargeFx{
             float randN = rand.random(120f);
             Fill.poly(e.x + x, e.y + y, 4, e.fout() * 8f * rand.random(0.8f, 1.2f), e.rotation + randN * e.fin());
         });
+    }),
+    surgeHealWave = new Effect(60, e -> {
+        color(Pal.surge);
+        stroke(e.fout() * 4f);
+        Lines.circle(e.x, e.y, 4f + e.finpow() * e.rotation);
+    }),
+    surgeHeal = new Effect(60, e -> {
+        rand.setSeed(e.id);
+        color(Pal.surge);
+        stroke(e.fout() * 1f);
+        Lines.circle(e.x, e.y, 2f + e.finpow() * 7f);
+        randLenVectors(e.id, 3, 1f + 24f * e.fin(), 2f, (x, y) -> {
+            float randN = rand.random(120f);
+            Fill.poly(e.x + x, e.y + y, 4, e.fout() * 2f * rand.random(0.2f, 0.4f), e.rotation + randN * e.fin());
+        });
     });
     private ChargeFx(){
         throw new AssertionError();

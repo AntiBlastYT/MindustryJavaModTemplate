@@ -188,7 +188,7 @@ bastion = new ErUnitType("bastion"){{
                 x = 0f;
                 y = 8.25f;
                 mirror = false;
-                reload = 10f * 60f;
+                reload = 5f * 60f;
                 shootSound = ErSounds.bastionlaser;
                 shootStatus = StatusEffects.slow;
                 shoot.firstShotDelay =  0f;
@@ -275,14 +275,13 @@ remedy = new ErUnitType("remedy"){{
                     speed = 3f;
                     lifetime = 60f;
                     hitShake = despawnShake = 1.2f;
-                    hitEffect = Fx.massiveExplosion;
+                    hitEffect = HitFx.surgeBlast;
                     status = StatusEffects.electrified;
                     hitSound = Sounds.none;
 
-                    fragBullet = new ReflectingLaserBulletType(20f){{
+                    fragBullet = new ReflectingLaserBulletType(30f){{
                         lifetime = 40f;
                         shootEffect = ChargeFx.bouncingLaserShoot;
-                        healPercent = 2.5f;
                         splashDamage = 10f;
                         splashDamageRadius = 5f;
                         lightningDamage = 10f;
@@ -291,17 +290,19 @@ remedy = new ErUnitType("remedy"){{
                         pierceCap = 1;
                         targetGround = true;
                         targetAir = true;
-                        collidesTeam = true;
+                        collidesTeam = false;
                         lightningLength = 6; 
                         colors = new Color[]{Pal.surge.cpy().a(0f), Pal.surge.cpy().a(0.4f), Pal.surge.cpy().mul(0.8f), Color.white};
                     }};
                     fragBullets = 3;
                     fragRandomSpread = 40f;
                     fragSpread = 120f;
-                    healPercent = 10f;
 
-                    trailChance = 0.8f;
+                    trailRotation = true;
                     trailEffect = ChargeFx.triSpark1;
+                    trailInterval = 3f;
+                    trailWidth = 4f;
+                    trailLength = 3;
 
                     backColor = lightColor = lightningColor = trailColor = hitColor = Pal.surge;
 
@@ -316,8 +317,8 @@ remedy = new ErUnitType("remedy"){{
 				regen = 1f;
 				cooldown = 60f * 10f;
 				max = 3000f;
-				width = 9f;
-				drawWidth = 4f;
+				width = 11f;
+				drawWidth = 5f;
 				whenShooting = false;
 			}},(new ShieldTurret(){{
 				radius = hitSize + 56f;
@@ -325,10 +326,11 @@ remedy = new ErUnitType("remedy"){{
 				regen = 1f;
 				cooldown = 60f * 10f;
 				max = 3000f;
-				width = 9f;
-				drawWidth = 4f;
+				width = 11f;
+				drawWidth = 5f;
 				whenShooting = false;
-			}}));
+			}}),
+            (new ErekRepairField(100f, 60f * 3, 100f)));
     armor = 5;
     hitSize = 34f;
     flying = true;
