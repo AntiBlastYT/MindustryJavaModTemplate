@@ -42,10 +42,37 @@ import static mindustry.Vars.*;
 
 public class ErUnits{
 
-    public static ErUnitType wisp, nanite, bastion, remedy;
+    public static ErUnitType wisp, nanite, bastion, remedy, spidern;
 
     public static void load(){
 
+        spidern = new ErUnitType("spidern"){{
+                speed = 0.6F;
+                drag = 0.1F;
+                hitSize = 21.0F;
+                rotateSpeed = 3.0F;
+                health = 3200.0F;
+                armor = 10.0F;
+                fogRadius = 30.0F;
+                stepShake = 0.75F;
+                legCount = 4;
+                legLength = 22.0F;
+                legGroupSize = 2;
+                lockLegBase = true;
+                legContinuousMove = true;
+                legExtension = -3.0F;
+                legBaseOffset = 7.0F;
+                legMaxLength = 1.1F;
+                legMinLength = 0.2F;
+                legLengthScl = 0.925F;
+                legForwardScl = 0.9075F;
+                legMoveSpace = 1.085F;
+                hovering = true;
+                shadowElevation = 0.22F;
+                groundLayer = 74.0F;
+                faceTarget = false;
+    };
+};
         	wisp = new ErUnitType("wisp"){{
 			aiController = RepairAI::new;
 			defaultCommand = UnitCommand.repairCommand;
